@@ -1,14 +1,26 @@
 <div>
   <h1>Housekeeping Central</h1>
-  <img src="deznuts" alt="">
-
+  <img src="deznuts" alt="" />
+  <app-hotel-rates></app-hotel-rates>
   <div>
     <form class="example-form">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>number of housekeepers</mat-label>
-        <input matInput placeholder="Board Numbers" type="number" (keyup)="updateBoardNumber($event)" >
+        <input
+          matInput
+          placeholder="Board Numbers"
+          type="number"
+          (keyup)="updateBoardNumber($event)"
+        />
       </mat-form-field>
-      <button mat-raised-button color="primary" type="button" (click)="createBoards()">Create Boards</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="createBoards()"
+      >
+        Create Boards
+      </button>
     </form>
   </div>
   <app-board-display [updatedBoards]="boards"></app-board-display>
@@ -16,20 +28,33 @@
     <form class="example-form">
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>room number</mat-label>
-        <input matInput placeholder="Board Numbers" type="number" (keyup)="updateRoomNumber($event)" >
+        <input
+          matInput
+          placeholder="Board Numbers"
+          type="number"
+          (keyup)="updateRoomNumber($event)"
+        />
       </mat-form-field>
-      <button mat-raised-button color="primary" type="button" (click)="addRoom()">Add Room</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="addRoom()"
+      >
+        Add Room
+      </button>
     </form>
   </div>
-  <button mat-raised-button color="primary" type="button" (click)="prevBoard()">Previous Board</button>
-  Current Board: {{currentBoard + 1}}
-  <button mat-raised-button color="primary" type="button" (click)="nextBoard()">Next Board</button>
+  <button mat-raised-button color="primary" type="button" (click)="prevBoard()">
+    Previous Board
+  </button>
+  Current Board: {{ currentBoard + 1 }}
+  <button mat-raised-button color="primary" type="button" (click)="nextBoard()">
+    Next Board
+  </button>
+  <div></div>
+
   <div>
-
+    {{ boards }}
   </div>
-
-  <div>
-    {{boards}}
-  </div>
-
 </div>
