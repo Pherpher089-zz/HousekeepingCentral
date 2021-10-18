@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { BoardDisplayComponent } from './board-display/board-display.component';
 import { HotelRatesComponent } from './hotel-rates/hotel-rates.component';
 @NgModule({
@@ -20,6 +21,7 @@ import { HotelRatesComponent } from './hotel-rates/hotel-rates.component';
     MatButtonModule,
     HttpClientModule,
     MatCardModule,
+    MatDividerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

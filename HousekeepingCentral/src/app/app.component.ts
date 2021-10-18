@@ -3,11 +3,11 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  styleUrls: ['./app.component.sass'],
 })
 export class AppComponent {
-      
   title = 'HousekeepingCentral';
+<<<<<<< HEAD
   queens: any = {112:112,113:113,116:116,
     212:212,214:214,215:215,
     216:216,217:217,218:218,
@@ -32,41 +32,56 @@ export class AppComponent {
   totalQueens: number = 0;
   roomNumberInput: any=0;
   numberOfBoards: number = 6;
+=======
+  roomNumberInput: number = 0;
+  numberOfBoards: number = 0;
+>>>>>>> 270d62ce50ea11a88a5eeca8047bc6805adf4b9f
   currentBoard: number = 0;
   boards: any[] = [];
 
   createBoards() {
-    var myGrid = [...Array(Number(this.numberOfBoards))].map(e => Array(Number()));
-    this.boards=myGrid
-    console.log(this.boards)
+    var myGrid = [...Array(Number(this.numberOfBoards))].map((e) =>
+      Array(Number())
+    );
+    this.boards = myGrid;
+    console.log(this.boards);
   }
 
+<<<<<<< HEAD
   addRoom(){
     if(this.queens[this.roomNumberInput]){ }
     this.boards[this.currentBoard]=[...this.boards[this.currentBoard], this.roomNumberInput]
+=======
+  addRoom() {
+    this.boards[this.currentBoard] = [
+      ...this.boards[this.currentBoard],
+      this.roomNumberInput,
+    ];
+>>>>>>> 270d62ce50ea11a88a5eeca8047bc6805adf4b9f
   }
-  
-  updateBoardNumber(event: any){
+
+  updateBoardNumber(event: any) {
     this.numberOfBoards = event.target.value;
   }
-  updateRoomNumber(event: any){
+  updateRoomNumber(event: any) {
     this.roomNumberInput = event.target.value;
   }
 
-  nextBoard(){
-    if(this.currentBoard < this.numberOfBoards - 1){
+  nextBoard() {
+    if (this.currentBoard < this.numberOfBoards - 1) {
       this.currentBoard++;
     } else {
       this.currentBoard = 0;
     }
   }
-  prevBoard(){
-    if(this.currentBoard > 0){
+  prevBoard() {
+    if (this.currentBoard > 0) {
       this.currentBoard--;
     } else {
       this.currentBoard = this.numberOfBoards - 1;
     }
   }
+<<<<<<< HEAD
 
   sortBoards(){
     let sorted = false;
@@ -93,4 +108,6 @@ export class AppComponent {
     return [[1,2]];
   }
 
+=======
+>>>>>>> 270d62ce50ea11a88a5eeca8047bc6805adf4b9f
 }
