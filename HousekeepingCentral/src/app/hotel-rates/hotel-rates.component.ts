@@ -25,7 +25,7 @@ export class HotelRatesComponent implements OnInit {
   hiltonGardenKey: string = 'g33055-d1011167';
   hiltonGardenRate: string = '';
 
-  rates: Array<Object> = [];
+  rates: Array<{ name: string; rate: string }> = [];
   // url =
   //   'https://data.xotelo.com/api/rates?hotel_key=g32797-d80465&chk_in=2021-10-17&chk_out=2021-10-18';
   constructor(private http: HttpClient) {}
