@@ -1,8 +1,5 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-
 @Component({
   selector: 'app-hotel-rates',
   templateUrl: './hotel-rates.component.html',
@@ -25,7 +22,7 @@ export class HotelRatesComponent implements OnInit {
   hiltonGardenKey: string = 'g33055-d1011167';
   hiltonGardenRate: string = '';
 
-  rates: Array<Object> = [];
+  rates: Array<{ name: string; rate: string }> = [];
   // url =
   //   'https://data.xotelo.com/api/rates?hotel_key=g32797-d80465&chk_in=2021-10-17&chk_out=2021-10-18';
   constructor(private http: HttpClient) {}
@@ -43,13 +40,13 @@ export class HotelRatesComponent implements OnInit {
     var tmrw = new Date();
 
     tmrw.setDate(tmrw.getDate() + 1);
-    // Thu Mar 01 2012 11:00:00 GMT+1100 (EST)
     var tmrwDD = String(tmrw.getDate()).padStart(2, '0');
     var tmrwMM = String(tmrw.getMonth() + 1).padStart(2, '0'); //January is 0!
     var tmrwYYYY = tmrw.getFullYear();
 
     this.checkOutDate = tmrwYYYY + '-' + tmrwMM + '-' + tmrwDD;
 
+    // Could definetley have a refactor
     await this.http
       .get<any>(
         `https://data.xotelo.com/api/rates?hotel_key=${this.courtyardPetKey}&chk_in=${this.checkInDate}&chk_out=${this.checkOutDate}`
@@ -146,7 +143,5 @@ export class HotelRatesComponent implements OnInit {
           console.error('There was an error!', error);
         },
       });
-    // WOrks but not rendering to DOM
-    console.log(this.rates, 'Ratews');
   }
 }

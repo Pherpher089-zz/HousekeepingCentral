@@ -1,0 +1,17 @@
+<mat-card *ngIf="rates.length !== 0" class="competitor-container">
+  <div class="center">
+    <img src="/assets/lighting.png" alt="Competitors" class="icon" />
+    <h3 class="competitor-title">Competitor Rates</h3>
+    <img src="/assets/lighting.png" alt="Competitors" class="icon" />
+  </div>
+  <mat-divider></mat-divider>
+  <div *ngFor="let rate of rates">
+    <div class="rate-box">
+      <p>
+        {{ rate.name }}
+      </p>
+      <p>${{ rate.rate }}</p>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+</mat-card>
