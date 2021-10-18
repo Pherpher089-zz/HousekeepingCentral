@@ -1,49 +1,51 @@
-<div>
+<div class="main-container">
   <h1>Housekeeping Central</h1>
-  <img src="deznuts" alt="" />
-  <app-hotel-rates></app-hotel-rates>
+  <!-- <img src="deznuts" alt="" />    -->
   <div>
-    <form class="example-form">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>number of housekeepers</mat-label>
-        <input
-          matInput
-          placeholder="Board Numbers"
-          type="number"
-          (keyup)="updateBoardNumber($event)"
-        />
-      </mat-form-field>
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        (click)="createBoards()"
-      >
-        Create Boards
-      </button>
-    </form>
-  </div>
-  <app-board-display [updatedBoards]="boards"></app-board-display>
-  <div>
-    <form class="example-form">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>room number</mat-label>
-        <input
-          matInput
-          placeholder="Board Numbers"
-          type="number"
-          (keyup)="updateRoomNumber($event)"
-        />
-      </mat-form-field>
-      <button
-        mat-raised-button
-        color="primary"
-        type="button"
-        (click)="addRoom()"
-      >
-        Add Room
-      </button>
-    </form>
+    <div class="space-between">
+      <form class="column-start board-creation">
+        <p class="light-text">
+          *Number of housekeepers create the number of boards for rooms to clean
+        </p>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>number of housekeepers</mat-label>
+          <input
+            matInput
+            placeholder="Board Numbers"
+            type="number"
+            (keyup)="updateBoardNumber($event)"
+          />
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="createBoards()"
+        >
+          Create Boards
+        </button>
+      </form>
+      <div>
+        <form class="column-start">
+          <p class="light-text">
+            Enter room number associated to board {{ currentBoard + 1 }}
+          </p>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>room number</mat-label>
+            <input matInput type="number" (keyup)="updateRoomNumber($event)" />
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            (click)="addRoom()"
+          >
+            Add Room
+          </button>
+        </form>
+      </div>
+      <app-hotel-rates></app-hotel-rates>
+    </div>
   </div>
   <button mat-raised-button color="primary" type="button" (click)="prevBoard()">
     Previous Board
@@ -52,9 +54,5 @@
   <button mat-raised-button color="primary" type="button" (click)="nextBoard()">
     Next Board
   </button>
-  <div></div>
-
-  <div>
-    {{ boards }}
-  </div>
+  <app-board-display [updatedBoards]="boards"></app-board-display>
 </div>
