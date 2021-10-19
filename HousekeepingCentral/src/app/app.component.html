@@ -3,7 +3,7 @@
   <!-- <img src="deznuts" alt="" />    -->
   <div>
     <div class="space-between">
-      <form class="column-start board-creation">
+      <form class="column-start board-creation" onSubmit="return false">
         <p class="light-text">
           *Number of housekeepers create the number of boards for rooms to clean
         </p>
@@ -26,13 +26,18 @@
         </button>
       </form>
       <div>
-        <form class="column-start">
+        <form class="column-start" onSubmit="return false">
           <p class="light-text">
             Enter room number associated to board {{ currentBoard + 1 }}
           </p>
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>room number</mat-label>
-            <input matInput type="number" (keyup)="updateRoomNumber($event)" />
+            <input
+              matInput
+              id="RoomNumber"
+              type="number"
+              (keyup)="updateRoomNumber($event)"
+            />
           </mat-form-field>
           <button
             mat-raised-button
@@ -44,6 +49,7 @@
           </button>
         </form>
       </div>
+      <app-board-display [updatedBoards]="boards"></app-board-display>
       <app-hotel-rates></app-hotel-rates>
     </div>
   </div>
@@ -54,5 +60,14 @@
   <button mat-raised-button color="primary" type="button" (click)="nextBoard()">
     Next Board
   </button>
-  <app-board-display [updatedBoards]="boards"></app-board-display>
+  <div>
+    <button
+      mat-raised-button
+      color="secondary"
+      type="button"
+      (click)="sortBoards()"
+    >
+      Sort Boards
+    </button>
+  </div>
 </div>

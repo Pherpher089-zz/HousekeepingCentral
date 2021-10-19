@@ -74,16 +74,29 @@ export class AppComponent {
   numberOfBoards: number = 6; //How many housekeeping boards are we sorting today?
   currentBoard: number = 0; //What board are we adding rooms to?
   boards: any[] = []; //The house keeping boards
+  sortedBoards: any[] = [];
+  changes: any[] = [];
   queenBoards: any[] = []; // A 2D array holding all of the queen room numbers based on input
+  kingBoards: any[] = [];
   averageQueens: any[] = []; //The average number of QQs per board. An array holds the average if there is a remainder
+  averageKings: any[] = [];
   totalQueens: number = 0; //Total number of queen rooms to be cleaned today
+  totalKings: number = 0;
 
   createBoards() {
-    var myGrid = [...Array(Number(this.numberOfBoards))].map((e) =>
+    var myBoards = [...Array(Number(this.numberOfBoards))].map((e) =>
       Array(Number())
     );
-    this.boards = myGrid;
+
+    //copying myBoards array by value
+    this.boards = myBoards.slice();
+    this.queenBoards = myBoards.slice();
+    this.sortedBoards = myBoards.slice();
+    this.sortedBoards = myBoards.slice();
+
     console.log(this.boards);
+    console.log(this.queenBoards);
+    console.log(this.sortedBoards)
   }
 
   //Add the room number the user input when they hit submit
@@ -92,27 +105,52 @@ export class AppComponent {
       ...this.boards[this.currentBoard],
       this.roomNumberInput,
     ];
+    return false;
   }
 
   /*This will sort the queens out of the current board list, and calculate the average number of queens per room. If there is a remainder on the average, it will be added as the second element in the averageQueens array.*/
   sortRooms(){
-    for(let i = 0; i < this.boards.length-1; i++) {
-      for(let j=0; j < this.boards[i].length-1; j++) {
-        if(this.queens[this.boards[i][i]]) {
+    for(let i = 0; i < this.boards.length; i++) {
+      for(let j=0; j < this.boards[i].length; j++) {
+        console.log("Checking: " + this.boards[i][i])
+        if(this.boards[i][i] in this.queens) {
+          console.log('Room: ' + this.boards[i][j] + ' is in queens')
           this.queenBoards[i] = [...this.queenBoards[i], this.boards[i][j]];
-          this.boards[i].pop(j);
+          this.boards[i].splice(j,1);
           this.totalQueens++;
         }
       }
     }
-    //Gets the average number of queen rooms
-    this.averageQueens[0] = this.totalQueens/this.numberOfBoards;
-    if(this.totalQueens%this.numberOfBoards!==0){
-      this.averageQueens[1] = this.totalQueens%this.numberOfBoards;
+
+    //adds the remainder of kings to the kings board
+    this.kingBoards = this.boards;
+    //gathering the total number of kings
+    for(let i = 0; i < this.kingBoards.length; i++)  {
+      this.totalKings += this.kingBoards[i].length;
     }
 
-    console.log(this.boards)
+    //Gather the average number of kings
+    this.averageKings[0] = Math.floor(this.totalKings / this.numberOfBoards);
+    if(this.totalKings % this.numberOfBoards != 0){
+      this.averageKings[1] = this.totalKings % this.numberOfBoards;
+      this.averageKings[0]++;
+    }
+    //Gets the average number of queen rooms
+    this.averageQueens[0] = Math.floor(this.totalQueens/this.numberOfBoards);
+    if(this.totalQueens%this.numberOfBoards!==0){
+      this.averageQueens[1] = this.totalQueens%this.numberOfBoards;
+      this.averageQueens[0]++;
+    }
+    console.log("KingBoards:")
+    console.log(this.kingBoards)
+    console.log("King Average: " + this.averageKings)
+
+    console.log("QueenBoards:")
     console.log(this.queenBoards)
+    console.log("Queen Average: " + this.averageQueens)
+
+    console.log(this.sortedBoards);
+
   }
 
   updateBoardNumber(event: any) {
@@ -137,7 +175,64 @@ export class AppComponent {
     }
   }
 
+  checkForChanges(){
+    for(var i = 0; i < this.boards.length;i++) {
+      for(var j = 0; i < this.boards[i].length;j++) {
+        var k = 0;
+        var wasFound = false;
+        while(this.boards[i][k] <= this.sortedBoards[i][j]) {
+          if(this.boards[i][k] == this.sortedBoards[i][j]) {
+            wasFound = true;
+          }
+          k++;
+        }
+        if(!wasFound) {
+          this.changes[i] = [...this.changes[i], this.sortedBoards[i][j]];
+        }
+      }
+    }
+
+    console.log(this.changes)
+  }
+
   sortBoards() {
+    this.sortRooms();
+
+    for(var i = 0; i < this.kingBoards.length;) {
+      for(var j = 0; j < this.averageKings[0]; j++) {
+        console.log("adding to sorted")
+        this.sortedBoards[i] = [...this.sortedBoards, this.kingBoards[i][j]]
+      }
+      this.averageKings[1]--;
+      if(this.averageKings[1] == 0) {
+        this.averageKings[0]--;
+      }
+      i++;
+    }
+
+    for(var i = 0; i < this.queenBoards.length;) {
+      for(var j = 0; j < this.averageQueens[0]; j++) {
+        console.log("adding to sorted")
+        this.sortedBoards[i] = [...this.sortedBoards, this.queenBoards[i][j]];
+      }
+      this.averageQueens[1]--;
+      if(this.averageQueens[1] == 0) {
+        this.averageQueens[0]--;
+      }
+      i++;
+    }
+    
+    this.checkForChanges()
+    this.boards = this.sortedBoards.slice();
+  }
+}
+
+
+/*  
+
+My first attempt to sorting the boards
+
+    sortBoards() {
     this.sortRooms();
     let sorted = false; //Much like the bubble sort, this will iterate the boards until its complete
     this.currentBoard = 0;
@@ -150,8 +245,14 @@ export class AppComponent {
       } else {
         currentAverage = this.averageQueens[0];
       }
-      while (this.queens[this.currentBoard].length != currentAverage) {
+      while (this.queenBoards[this.currentBoard][0]===0) {
         if(this.queens[this.currentBoard].length < currentAverage && this.queenBoards[this.currentBoard+1].length == 0)
+        {
+          this.nextBoard();
+          if(this.currentBoard == this.numberOfBoards - 1){
+
+          }
+        }
         if (this.queenBoards[this.currentBoard].length > currentAverage) {
           //Get the room off the queens board
           var room = this.queenBoards[this.currentBoard].pop(this.queenBoards[this.currentBoard].length-1);
@@ -161,7 +262,7 @@ export class AppComponent {
             room,
           ];
           //Add a king from next board to current board
-          room = this.boards[this.currentBoard + 1].pop(0);
+          room = this.boards[this.currentBoard + 1].pop(0);     
           this.boards[this.currentBoard]=[...this.boards[this.currentBoard], room]
 
           //if the current queen board had to little queens
@@ -183,7 +284,4 @@ export class AppComponent {
       }
       //when incrementing current board, skip the last index
     }
-  }
-}
-
-//[] Gather Queens
+  }*/
