@@ -1,4 +1,13 @@
 <p>board-display works!</p>
-<div *ngFor="let board of updatedBoards; let i = index" [attr.data-index]="i">
-  Board1: {{ updatedBoards[i] }}
+<div
+  class="boards"
+  *ngFor="let board of updatedBoards; let i = index"
+  [attr.data-index]="i"
+>
+  <div class="boardDisplay">
+    <h1>Board{{ i }}</h1>
+    <div *ngFor="let room of board; let i = index" [attr.data-index]="i">
+      <p class="room">{{ room }}</p>
+    </div>
+  </div>
 </div>

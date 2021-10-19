@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, SimpleChange } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -90,13 +90,10 @@ export class AppComponent {
 
     //copying myBoards array by value
     this.boards = myBoards.slice();
-    this.queenBoards = myBoards.slice();
     this.sortedBoards = myBoards.slice();
-    this.sortedBoards = myBoards.slice();
-
-    console.log(this.boards);
-    console.log(this.queenBoards);
-    console.log(this.sortedBoards)
+    this.changes = myBoards.slice();
+    this.kingBoards = []
+    this.queenBoards = []
   }
 
   //Add the room number the user input when they hit submit
@@ -105,29 +102,38 @@ export class AppComponent {
       ...this.boards[this.currentBoard],
       this.roomNumberInput,
     ];
+    this.highlightQueens();
     return false;
   }
 
   /*This will sort the queens out of the current board list, and calculate the average number of queens per room. If there is a remainder on the average, it will be added as the second element in the averageQueens array.*/
   sortRooms(){
+    console.log("King Boards:");
+    console.log(this.kingBoards);
+    console.log("Queen Boards:");
+    console.log(this.queenBoards);
+    console.log("before ^")
     for(let i = 0; i < this.boards.length; i++) {
       for(let j=0; j < this.boards[i].length; j++) {
         console.log("Checking: " + this.boards[i][i])
-        if(this.boards[i][i] in this.queens) {
+        if(this.queens[this.boards[i][j]]) {
           console.log('Room: ' + this.boards[i][j] + ' is in queens')
-          this.queenBoards[i] = [...this.queenBoards[i], this.boards[i][j]];
+          this.queenBoards = [...this.queenBoards, this.boards[i][j]];
           this.boards[i].splice(j,1);
-          this.totalQueens++;
+          j--;
         }
       }
     }
 
     //adds the remainder of kings to the kings board
-    this.kingBoards = this.boards;
-    //gathering the total number of kings
-    for(let i = 0; i < this.kingBoards.length; i++)  {
-      this.totalKings += this.kingBoards[i].length;
+    for(var i=0; i < this.boards.length; i++) {
+      this.boards[i].forEach((element: any) => {
+        this.kingBoards = [...this.kingBoards, element]
+      });
     }
+    //gathering the total number of kings
+    this.totalKings = this.kingBoards.length;
+    this.totalQueens = this.queenBoards.length;
 
     //Gather the average number of kings
     this.averageKings[0] = Math.floor(this.totalKings / this.numberOfBoards);
@@ -141,21 +147,24 @@ export class AppComponent {
       this.averageQueens[1] = this.totalQueens%this.numberOfBoards;
       this.averageQueens[0]++;
     }
-    console.log("KingBoards:")
-    console.log(this.kingBoards)
-    console.log("King Average: " + this.averageKings)
 
-    console.log("QueenBoards:")
-    console.log(this.queenBoards)
-    console.log("Queen Average: " + this.averageQueens)
+    
+    console.log("King Boards:");
+    console.log(this.kingBoards);
+    console.log("Kings Average: " + this.averageKings)
+    console.log("\n")
+    console.log("Queen Boards:");
+    console.log(this.queenBoards);
+    console.log("Queens Average: " + this.averageQueens)
 
-    console.log(this.sortedBoards);
-
+    this.queenBoards.sort();
+    this.kingBoards.sort();
   }
 
   updateBoardNumber(event: any) {
     this.numberOfBoards = event.target.value;
   }
+
   updateRoomNumber(event: any) {
     this.roomNumberInput = event.target.value;
   }
@@ -167,6 +176,7 @@ export class AppComponent {
       this.currentBoard = 0;
     }
   }
+
   prevBoard() {
     if (this.currentBoard > 0) {
       this.currentBoard--;
@@ -176,13 +186,18 @@ export class AppComponent {
   }
 
   checkForChanges(){
-    for(var i = 0; i < this.boards.length;i++) {
-      for(var j = 0; i < this.boards[i].length;j++) {
+    // console.log("in changes")
+    for(var i = 0; i < this.sortedBoards.length; i++) {
+      for(var j = 0; j < this.boards[i].length; j++) {
         var k = 0;
         var wasFound = false;
-        while(this.boards[i][k] <= this.sortedBoards[i][j]) {
+        while(k < this.boards.length) {
+          // console.log("boards "+ i +" "+ k + " = " +this.boards[i][k])
+          // console.log("sorted "+ i +" "+ j + " = " +this.sortedBoards[i][j])
+
           if(this.boards[i][k] == this.sortedBoards[i][j]) {
             wasFound = true;
+            break;
           }
           k++;
         }
@@ -191,39 +206,50 @@ export class AppComponent {
         }
       }
     }
-
     console.log(this.changes)
   }
 
   sortBoards() {
     this.sortRooms();
-
-    for(var i = 0; i < this.kingBoards.length;) {
+    let c = 0;
+    for(var i = 0; i < this.boards.length; i++) {
       for(var j = 0; j < this.averageKings[0]; j++) {
-        console.log("adding to sorted")
-        this.sortedBoards[i] = [...this.sortedBoards, this.kingBoards[i][j]]
+        // console.log("adding to sorted")
+        this.sortedBoards[i] = [...this.sortedBoards[i], this.kingBoards[c]]
+        c++;
       }
       this.averageKings[1]--;
       if(this.averageKings[1] == 0) {
         this.averageKings[0]--;
       }
-      i++;
     }
-
-    for(var i = 0; i < this.queenBoards.length;) {
+    c=0;
+    for(var i = 0; i < this.boards.length; i++) {
       for(var j = 0; j < this.averageQueens[0]; j++) {
-        console.log("adding to sorted")
-        this.sortedBoards[i] = [...this.sortedBoards, this.queenBoards[i][j]];
+        // console.log("adding to sorted")
+        this.sortedBoards[i] = [...this.sortedBoards[i], this.queenBoards[c]]
+        c++;
       }
       this.averageQueens[1]--;
       if(this.averageQueens[1] == 0) {
         this.averageQueens[0]--;
       }
-      i++;
     }
     
-    this.checkForChanges()
+    console.log("Sorted Boards")
+    console.log(this.sortedBoards)
+    //this.checkForChanges()
     this.boards = this.sortedBoards.slice();
+    //this.highlightQueens()
+  }
+
+  highlightQueens(){
+    var queens = document.getElementsByClassName("room") 
+    for(var i = 0; i  < queens.length; i++) {
+      // console.log("looping")
+      queens[i].className += "Queen";
+    }
+    // console.log(queens)
   }
 }
 

@@ -7,15 +7,18 @@ import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 })
 export class BoardDisplayComponent implements OnInit {
   @Input() updatedBoards: any[] = [];
+  @Input() queens: any = {}
 
   constructor() { }
   ngOnInit(): void {
-    console.log(this.updatedBoards)
+    // console.log(this.updatedBoards)
   }
 
   ngOnChanges(changes:SimpleChange){
-    console.log(changes, "changes")
+    // console.log(changes, "changes")
   }
+
+  
 
 
 } 
