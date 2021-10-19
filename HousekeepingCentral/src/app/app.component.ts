@@ -186,27 +186,14 @@ export class AppComponent {
   }
 
   checkForChanges(){
-    // console.log("in changes")
-    for(var i = 0; i < this.sortedBoards.length; i++) {
-      for(var j = 0; j < this.boards[i].length; j++) {
-        var k = 0;
-        var wasFound = false;
-        while(k < this.boards.length) {
-          // console.log("boards "+ i +" "+ k + " = " +this.boards[i][k])
-          // console.log("sorted "+ i +" "+ j + " = " +this.sortedBoards[i][j])
+    for(var i = 0; i < this.boards.length; i++){
+      var j = 0, k = 0;
+      while(k < this.sortedBoards.length) {
+        if(this.sortedBoards[i][k] ) {
 
-          if(this.boards[i][k] == this.sortedBoards[i][j]) {
-            wasFound = true;
-            break;
-          }
-          k++;
-        }
-        if(!wasFound) {
-          this.changes[i] = [...this.changes[i], this.sortedBoards[i][j]];
         }
       }
     }
-    console.log(this.changes)
   }
 
   sortBoards() {
@@ -238,7 +225,7 @@ export class AppComponent {
     
     console.log("Sorted Boards")
     console.log(this.sortedBoards)
-    //this.checkForChanges()
+    this.checkForChanges()
     this.boards = this.sortedBoards.slice();
     //this.highlightQueens()
   }
