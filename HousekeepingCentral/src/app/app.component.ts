@@ -87,7 +87,7 @@ export class AppComponent {
   boardsQuantity = new FormControl('')
   roomNumber = new FormControl('')
 
-  createBoards(event: any) {
+  createBoards(event: Event) {
     event.preventDefault()
     var myBoards = [...Array(Number(this.boardsQuantity.value))].map((e) =>
       Array(Number())
@@ -124,6 +124,7 @@ export class AppComponent {
   sortRooms(){
     var tempBoards: any[] = [[]]
     for(var i = 0; i < this.boards.length; i++) {
+      this.boards[i].sort();
       tempBoards[i] = this.boards[i].slice();
     }
 
@@ -139,7 +140,6 @@ export class AppComponent {
 
     //adds the remainder of kings to the kings board
     for(var i=0; i < tempBoards.length; i++) {
-      this.boards[i].sort();
       tempBoards[i].forEach((element: any) => {
         this.kingBoards = [...this.kingBoards, element]
       });

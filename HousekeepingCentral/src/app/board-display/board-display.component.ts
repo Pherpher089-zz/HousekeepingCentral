@@ -8,6 +8,7 @@ import { Component, Input, OnInit, SimpleChange } from '@angular/core';
 export class BoardDisplayComponent implements OnInit {
   @Input() updatedBoards: any[] = [];
   @Input() queens: any = {}
+  @Input() changes: any []=[];
 
   constructor() { }
   ngOnInit(): void {
