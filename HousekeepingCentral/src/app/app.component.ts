@@ -175,7 +175,8 @@ export class AppComponent {
     } else {
       this.currentBoard = 0;
     }
-  }
+  } 
+  
 
   prevBoard() {
     if (this.currentBoard > 0) {
