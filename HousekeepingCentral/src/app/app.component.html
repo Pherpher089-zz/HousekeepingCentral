@@ -3,7 +3,7 @@
   <!-- <img src="deznuts" alt="" />    -->
   <div>
     <div class="space-between">
-      <form class="column-start board-creation" onSubmit="return false">
+      <form class="column-start board-creation" onSubmit="createBoards($event)">
         <p class="light-text">
           *Number of housekeepers create the number of boards for rooms to clean
         </p>
@@ -11,8 +11,9 @@
           <mat-label>number of housekeepers</mat-label>
           <input
             matInput
+            [formControl]="boardsQuantity"
             placeholder="Board Numbers"
-            type="number"
+            type="input"
             (keyup)="updateBoardNumber($event)"
           />
         </mat-form-field>
@@ -20,30 +21,32 @@
           mat-raised-button
           color="primary"
           type="button"
-          (click)="createBoards()"
+          (click)="createBoards($event)"
         >
           Create Boards
         </button>
       </form>
       <div>
-        <form class="column-start" onSubmit="return false">
+        <form class="column-start" onSubmit="return false; addRoom($event); ">
           <p class="light-text">
             Enter room number associated to board {{ currentBoard + 1 }}
           </p>
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>room number</mat-label>
             <input
+              [formControl]="roomNumber"
               matInput
               id="RoomNumber"
               type="number"
               (keyup)="updateRoomNumber($event)"
             />
           </mat-form-field>
+          <p>{{ dupRoomWarning }}</p>
           <button
             mat-raised-button
             color="primary"
             type="button"
-            (click)="addRoom()"
+            (click)="addRoom($event)"
           >
             Add Room
           </button>

@@ -1,4 +1,5 @@
 import { Component, OnChanges, SimpleChange } from '@angular/core';
+import {FormGroup, FormControl} from '@angular/forms' 
 
 @Component({
   selector: 'app-root',
@@ -69,7 +70,6 @@ export class AppComponent {
     431: 431,
     432: 432,
   };
-
   roomNumberInput: any = 0; //Holds the room number the user is currently inputting
   numberOfBoards: number = 6; //How many housekeeping boards are we sorting today?
   currentBoard: number = 0; //What board are we adding rooms to?
@@ -82,12 +82,18 @@ export class AppComponent {
   averageKings: any[] = [];
   totalQueens: number = 0; //Total number of queen rooms to be cleaned today
   totalKings: number = 0;
+  allRooms: any = {}
+  dupRoomWarning: string = '';
+  boardsQuantity = new FormControl('')
+  roomNumber = new FormControl('')
 
-  createBoards() {
-    var myBoards = [...Array(Number(this.numberOfBoards))].map((e) =>
+  createBoards(event: any) {
+    event.preventDefault()
+    var myBoards = [...Array(Number(this.boardsQuantity.value))].map((e) =>
       Array(Number())
     );
-
+    this.boardsQuantity.setValue('');
+    this.allRooms = {};
     //copying myBoards array by value
     this.boards = myBoards.slice();
     this.sortedBoards = myBoards.slice();
@@ -97,37 +103,44 @@ export class AppComponent {
   }
 
   //Add the room number the user input when they hit submit
-  addRoom() {
-    this.boards[this.currentBoard] = [
-      ...this.boards[this.currentBoard],
-      this.roomNumberInput,
-    ];
-    this.highlightQueens();
+  addRoom(e: any) {
+    e.preventDefault()
+    
+    if(this.allRooms[this.roomNumberInput]) {
+      this.dupRoomWarning = this.roomNumberInput + " has already been added.\n Please try another room number."
+    } else {
+      this.allRooms[this.roomNumberInput] = this.roomNumberInput;
+      this.dupRoomWarning = '';
+      this.boards[this.currentBoard] = [
+        ...this.boards[this.currentBoard],
+        this.roomNumberInput,
+      ];
+    }
+    this.roomNumber.setValue('');
     return false;
   }
 
   /*This will sort the queens out of the current board list, and calculate the average number of queens per room. If there is a remainder on the average, it will be added as the second element in the averageQueens array.*/
   sortRooms(){
-    console.log("King Boards:");
-    console.log(this.kingBoards);
-    console.log("Queen Boards:");
-    console.log(this.queenBoards);
-    console.log("before ^")
-    for(let i = 0; i < this.boards.length; i++) {
-      for(let j=0; j < this.boards[i].length; j++) {
-        console.log("Checking: " + this.boards[i][i])
-        if(this.queens[this.boards[i][j]]) {
-          console.log('Room: ' + this.boards[i][j] + ' is in queens')
-          this.queenBoards = [...this.queenBoards, this.boards[i][j]];
-          this.boards[i].splice(j,1);
+    var tempBoards: any[] = [[]]
+    for(var i = 0; i < this.boards.length; i++) {
+      tempBoards[i] = this.boards[i].slice();
+    }
+
+    for(let i = 0; i < tempBoards.length; i++) {
+      for(let j=0; j < tempBoards[i].length; j++) {
+        if(this.queens[tempBoards[i][j]]) {
+          this.queenBoards = [...this.queenBoards, tempBoards[i][j]];
+          tempBoards[i].splice(j,1);
           j--;
         }
       }
     }
 
     //adds the remainder of kings to the kings board
-    for(var i=0; i < this.boards.length; i++) {
-      this.boards[i].forEach((element: any) => {
+    for(var i=0; i < tempBoards.length; i++) {
+      this.boards[i].sort();
+      tempBoards[i].forEach((element: any) => {
         this.kingBoards = [...this.kingBoards, element]
       });
     }
@@ -148,17 +161,8 @@ export class AppComponent {
       this.averageQueens[0]++;
     }
 
-    
-    console.log("King Boards:");
-    console.log(this.kingBoards);
-    console.log("Kings Average: " + this.averageKings)
-    console.log("\n")
-    console.log("Queen Boards:");
-    console.log(this.queenBoards);
-    console.log("Queens Average: " + this.averageQueens)
-
-    this.queenBoards.sort();
-    this.kingBoards.sort();
+    this.kingBoards.sort()
+    this.queenBoards.sort()
   }
 
   updateBoardNumber(event: any) {
@@ -176,7 +180,7 @@ export class AppComponent {
       this.currentBoard = 0;
     }
   } 
-  
+
 
   prevBoard() {
     if (this.currentBoard > 0) {
@@ -187,14 +191,31 @@ export class AppComponent {
   }
 
   checkForChanges(){
-    for(var i = 0; i < this.boards.length; i++){
-      var j = 0, k = 0;
-      while(k < this.sortedBoards.length) {
-        if(this.sortedBoards[i][k] ) {
 
+    console.log("sorted before check:")
+    console.log( this.sortedBoards)
+    console.log("boards before check: ")
+    console.log( this.boards)
+
+    for(var i = 0; i < this.sortedBoards.length; i++){
+
+      for(var j = 0; j < this.sortedBoards[i].length; j++) {
+        var match = false;
+        var k = 0;
+        while(k < this.sortedBoards[i].length) {
+          if(this.sortedBoards[i][k] == this.boards[i][j]) {
+            match = true;
+          }
+          k++;
+        }
+        if(!match) {
+          this.changes[i] = [...this.changes[i], this.sortedBoards[i][j]]
         }
       }
     }
+
+    console.log("Changes:")
+    console.log(this.changes)
   }
 
   sortBoards() {
