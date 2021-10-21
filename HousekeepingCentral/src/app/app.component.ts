@@ -1,5 +1,5 @@
 import { Component, OnChanges, SimpleChange } from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms' 
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -82,13 +82,16 @@ export class AppComponent {
   averageKings: any[] = [];
   totalQueens: number = 0; //Total number of queen rooms to be cleaned today
   totalKings: number = 0;
-  allRooms: any = {}
+  allRooms: any = {};
   dupRoomWarning: string = '';
-  boardsQuantity = new FormControl('')
-  roomNumber = new FormControl('')
+  boardsQuantity = new FormControl('');
+  roomNumber = new FormControl('');
 
-  createBoards(event: Event) {
-    event.preventDefault()
+  createBoards(event: any) {
+    if (event.key && event.key !== 'Enter') {
+      return;
+    }
+    console.log(event.key);
     var myBoards = [...Array(Number(this.boardsQuantity.value))].map((e) =>
       Array(Number())
     );
@@ -98,16 +101,19 @@ export class AppComponent {
     this.boards = myBoards.slice();
     this.sortedBoards = myBoards.slice();
     this.changes = myBoards.slice();
-    this.kingBoards = []
-    this.queenBoards = []
+    this.kingBoards = [];
+    this.queenBoards = [];
   }
 
   //Add the room number the user input when they hit submit
   addRoom(e: any) {
-    e.preventDefault()
-    
-    if(this.allRooms[this.roomNumberInput]) {
-      this.dupRoomWarning = this.roomNumberInput + " has already been added.\n Please try another room number."
+    if (e.key && e.key !== 'Enter') {
+      return;
+    }
+    if (this.allRooms[this.roomNumberInput]) {
+      this.dupRoomWarning =
+        this.roomNumberInput +
+        ' has already been added.\n Please try another room number.';
     } else {
       this.allRooms[this.roomNumberInput] = this.roomNumberInput;
       this.dupRoomWarning = '';
@@ -117,31 +123,32 @@ export class AppComponent {
       ];
     }
     this.roomNumber.setValue('');
+
     return false;
   }
 
   /*This will sort the queens out of the current board list, and calculate the average number of queens per room. If there is a remainder on the average, it will be added as the second element in the averageQueens array.*/
-  sortRooms(){
-    var tempBoards: any[] = [[]]
-    for(var i = 0; i < this.boards.length; i++) {
+  sortRooms() {
+    var tempBoards: any[] = [[]];
+    for (var i = 0; i < this.boards.length; i++) {
       this.boards[i].sort();
       tempBoards[i] = this.boards[i].slice();
     }
 
-    for(let i = 0; i < tempBoards.length; i++) {
-      for(let j=0; j < tempBoards[i].length; j++) {
-        if(this.queens[tempBoards[i][j]]) {
+    for (let i = 0; i < tempBoards.length; i++) {
+      for (let j = 0; j < tempBoards[i].length; j++) {
+        if (this.queens[tempBoards[i][j]]) {
           this.queenBoards = [...this.queenBoards, tempBoards[i][j]];
-          tempBoards[i].splice(j,1);
+          tempBoards[i].splice(j, 1);
           j--;
         }
       }
     }
 
     //adds the remainder of kings to the kings board
-    for(var i=0; i < tempBoards.length; i++) {
+    for (var i = 0; i < tempBoards.length; i++) {
       tempBoards[i].forEach((element: any) => {
-        this.kingBoards = [...this.kingBoards, element]
+        this.kingBoards = [...this.kingBoards, element];
       });
     }
     //gathering the total number of kings
@@ -150,19 +157,19 @@ export class AppComponent {
 
     //Gather the average number of kings
     this.averageKings[0] = Math.floor(this.totalKings / this.numberOfBoards);
-    if(this.totalKings % this.numberOfBoards != 0){
+    if (this.totalKings % this.numberOfBoards != 0) {
       this.averageKings[1] = this.totalKings % this.numberOfBoards;
       this.averageKings[0]++;
     }
     //Gets the average number of queen rooms
-    this.averageQueens[0] = Math.floor(this.totalQueens/this.numberOfBoards);
-    if(this.totalQueens%this.numberOfBoards!==0){
-      this.averageQueens[1] = this.totalQueens%this.numberOfBoards;
+    this.averageQueens[0] = Math.floor(this.totalQueens / this.numberOfBoards);
+    if (this.totalQueens % this.numberOfBoards !== 0) {
+      this.averageQueens[1] = this.totalQueens % this.numberOfBoards;
       this.averageQueens[0]++;
     }
 
-    this.kingBoards.sort()
-    this.queenBoards.sort()
+    this.kingBoards.sort();
+    this.queenBoards.sort();
   }
 
   updateBoardNumber(event: any) {
@@ -179,8 +186,7 @@ export class AppComponent {
     } else {
       this.currentBoard = 0;
     }
-  } 
-
+  }
 
   prevBoard() {
     if (this.currentBoard > 0) {
@@ -190,78 +196,75 @@ export class AppComponent {
     }
   }
 
-  checkForChanges(){
+  checkForChanges() {
+    console.log('sorted before check:');
+    console.log(this.sortedBoards);
+    console.log('boards before check: ');
+    console.log(this.boards);
 
-    console.log("sorted before check:")
-    console.log( this.sortedBoards)
-    console.log("boards before check: ")
-    console.log( this.boards)
-
-    for(var i = 0; i < this.sortedBoards.length; i++){
-
-      for(var j = 0; j < this.sortedBoards[i].length; j++) {
+    for (var i = 0; i < this.sortedBoards.length; i++) {
+      for (var j = 0; j < this.sortedBoards[i].length; j++) {
         var match = false;
         var k = 0;
-        while(k < this.sortedBoards[i].length) {
-          if(this.sortedBoards[i][k] == this.boards[i][j]) {
+        while (k < this.sortedBoards[i].length) {
+          if (this.sortedBoards[i][k] == this.boards[i][j]) {
             match = true;
           }
           k++;
         }
-        if(!match) {
-          this.changes[i] = [...this.changes[i], this.sortedBoards[i][j]]
+        if (!match) {
+          this.changes[i] = [...this.changes[i], this.sortedBoards[i][j]];
         }
       }
     }
 
-    console.log("Changes:")
-    console.log(this.changes)
+    console.log('Changes:');
+    console.log(this.changes);
   }
 
   sortBoards() {
     this.sortRooms();
     let c = 0;
-    for(var i = 0; i < this.boards.length; i++) {
-      for(var j = 0; j < this.averageKings[0]; j++) {
+    for (var i = 0; i < this.boards.length; i++) {
+      for (var j = 0; j < this.averageKings[0]; j++) {
         // console.log("adding to sorted")
-        this.sortedBoards[i] = [...this.sortedBoards[i], this.kingBoards[c]]
+        this.sortedBoards[i] = [...this.sortedBoards[i], this.kingBoards[c]];
         c++;
       }
       this.averageKings[1]--;
-      if(this.averageKings[1] == 0) {
+      if (this.averageKings[1] == 0) {
         this.averageKings[0]--;
       }
     }
-    c=0;
-    for(var i = 0; i < this.boards.length; i++) {
-      for(var j = 0; j < this.averageQueens[0]; j++) {
+    c = 0;
+    for (var i = 0; i < this.boards.length; i++) {
+      for (var j = 0; j < this.averageQueens[0]; j++) {
         // console.log("adding to sorted")
-        this.sortedBoards[i] = [...this.sortedBoards[i], this.queenBoards[c]]
+        this.sortedBoards[i] = [...this.sortedBoards[i], this.queenBoards[c]];
         c++;
       }
       this.averageQueens[1]--;
-      if(this.averageQueens[1] == 0) {
+      if (this.averageQueens[1] == 0) {
         this.averageQueens[0]--;
       }
     }
-    
-    console.log("Sorted Boards")
-    console.log(this.sortedBoards)
-    this.checkForChanges()
+
+    console.log('Sorted Boards');
+    console.log(this.sortedBoards);
+    this.checkForChanges();
     this.boards = this.sortedBoards.slice();
     //this.highlightQueens()
   }
 
-  highlightQueens(){
-    var queens = document.getElementsByClassName("room") 
-    for(var i = 0; i  < queens.length; i++) {
+  highlightQueens() {
+    var queens = document.getElementsByClassName('room');
+    for (var i = 0; i < queens.length; i++) {
       // console.log("looping")
-      queens[i].className += "Queen";
+      queens[i].className += 'Queen';
     }
     // console.log(queens)
   }
 }
-
 
 /*  
 
