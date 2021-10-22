@@ -1,12 +1,13 @@
-<h1 class="title">Housekeeping Central</h1>
 <!-- <img src="deznuts" alt="" />    -->
-<div>
+<div class="fadeIn">
 	<!--This div needs an ngif-->
-	<div class="create-boards-container" *ngIf="viewState == 'create'">
+	<div class="create-boards-container center" *ngIf="viewState == 'create'">
 		<form class="column-start board-creation" onSubmit="return false">
+			<app-housekeeping-animnation></app-housekeeping-animnation>
 			<p class="light-text">
 				*Number of housekeepers create the number of boards for rooms to
-				clean
+				clean.
+				<br />Creates their workload for the day.
 			</p>
 			<mat-form-field class="flex-center" appearance="fill">
 				<mat-label>number of housekeepers</mat-label>
@@ -30,8 +31,9 @@
 		</form>
 	</div>
 
-	<div *ngIf="viewState == 'sort'">
+	<div class="fadeIn column" *ngIf="viewState == 'sort'">
 		<app-board-display
+			[currentBoard]="currentBoard"
 			[updatedBoards]="boards"
 			[queens]="queens"
 			[changes]="changes"
@@ -39,20 +41,44 @@
 		></app-board-display>
 
 		<div>
-			<form class="column-start" onSubmit="return false">
-				<p class="light-text">
-					Enter room number associated to board {{ currentBoard + 1 }}
-				</p>
-				<mat-form-field class="example-full-width" appearance="fill">
-					<mat-label>room number</mat-label>
-					<input
-						[formControl]="roomNumber"
-						matInput
-						id="RoomNumber"
-						type="number"
-						(keyup)="updateRoomNumber($event); addRoom($event)"
-					/>
-				</mat-form-field>
+			<form class="column formClass" onSubmit="return false">
+				<div class="center column">
+					<p class="light-text">
+						Enter room number associated to board
+						{{ currentBoard + 1 }}
+					</p>
+				</div>
+				<div class="center">
+					<button
+						mat-raised-button
+						color="primary"
+						type="button"
+						(click)="prevBoard()"
+					>
+						Previous Board
+					</button>
+					<mat-form-field
+						class="example-full-width addRoom"
+						appearance="fill"
+					>
+						<mat-label>room number</mat-label>
+						<input
+							[formControl]="roomNumber"
+							matInput
+							id="RoomNumber"
+							type="number"
+							(keyup)="updateRoomNumber($event); addRoom($event)"
+						/>
+					</mat-form-field>
+					<button
+						mat-raised-button
+						color="primary"
+						type="button"
+						(click)="nextBoard()"
+					>
+						Next Board
+					</button>
+				</div>
 				<p>{{ dupRoomWarning }}</p>
 				<button
 					mat-raised-button
@@ -66,30 +92,14 @@
 			</form>
 		</div>
 
-		<button
-			mat-raised-button
-			color="primary"
-			type="button"
-			(click)="prevBoard()"
-		>
-			Previous Board
-		</button>
-		Current Board: {{ currentBoard + 1 }}
-		<button
-			mat-raised-button
-			color="primary"
-			type="button"
-			(click)="nextBoard()"
-		>
-			Next Board
-		</button>
-		<div>
+		<div class="sortBoards">
 			<button
 				mat-raised-button
 				color="secondary"
 				type="button"
 				(click)="sortBoards()"
 			>
+				<img src="/assets/filter.png" alt="sort" class="filter-icon" />
 				Sort Boards
 			</button>
 		</div>
