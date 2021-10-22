@@ -11,7 +11,6 @@ import { AnimationOptions } from 'ngx-lottie';
 			width="280px"
 			height="50%"
 			(loopComplete)="onLoopComplete()"
-			(animationCreated)="animationCreated($event)"
 		></ng-lottie>
 	`,
 })
@@ -20,10 +19,6 @@ export class HotelAnimationComponent {
 		path: '/assets/money.json',
 		loop: false,
 	};
-
-	animationCreated(animationItem: AnimationItem): void {
-		console.log(animationItem);
-	}
 
 	onLoopComplete(): void {
 		NgZone.assertNotInAngularZone();
