@@ -1,20 +1,35 @@
-.space-between
-    display: flex
-    flex-direction: row
-    justify-content: space-between
+// Import material theming functions
+@import '~@angular/material/theming'
 
+// Copy the palettes from your selected theme (usually theme.scss).
+$app-primary: mat-palette($mat-indigo)
+$app-accent:  mat-palette($mat-blue)
+$app-warn:    mat-palette($mat-pink)
+
+// Create your Sass color vars (will be available in all the project)
+$primary: mat-color($app-primary)
+$accent: mat-color($app-accent)
+$warn: mat-color($app-warn)
+
+.three-quarter-height
+    height: 75%
+
+.full-height
+    height: 100%
 .main-container
-    padding: 15px 25px
+    height: 100vh
+    .header-container
+        padding: 15px 0
+        display: flex
+        justify-content: end
+        height: 3rem
+        background-color: $primary
+        .nav-buttons
+            display: flex
+            justify-content: space-between
+            button
+                margin: 0 15px
+    .body
+        height: 100%
 
-.column-start
-    display: flex
-    flex-direction: column
-    align-items: flex-start
 
-.board-creation
-    width: 200px
-
-.light-text
-    font-size: 10px
-    line-height: 12px
-    color: gray 

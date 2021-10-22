@@ -1,2 +1,2 @@
 # HousekeepingCentral
-Sorts house keeping lists so you dont have to.
+Sorts house keeping lists so you don't have to.

@@ -1,0 +1,97 @@
+<h1 class="title">Housekeeping Central</h1>
+<!-- <img src="deznuts" alt="" />    -->
+<div>
+	<!--This div needs an ngif-->
+	<div class="create-boards-container" *ngIf="viewState == 'create'">
+		<form class="column-start board-creation" onSubmit="return false">
+			<p class="light-text">
+				*Number of housekeepers create the number of boards for rooms to
+				clean
+			</p>
+			<mat-form-field class="flex-center" appearance="fill">
+				<mat-label>number of housekeepers</mat-label>
+				<input
+					matInput
+					[formControl]="boardsQuantity"
+					placeholder="Board Numbers"
+					type="input"
+					(keyup)="updateBoardNumber($event); createBoards($event)"
+				/>
+			</mat-form-field>
+			<button
+				class="submitBoards"
+				mat-raised-button
+				color="primary"
+				type="button"
+				(click)="createBoards($event)"
+			>
+				Create Boards
+			</button>
+		</form>
+	</div>
+
+	<div *ngIf="viewState == 'sort'">
+		<app-board-display
+			[updatedBoards]="boards"
+			[queens]="queens"
+			[changes]="changes"
+			[hasSorted]="hasSorted"
+		></app-board-display>
+
+		<div>
+			<form class="column-start" onSubmit="return false">
+				<p class="light-text">
+					Enter room number associated to board {{ currentBoard + 1 }}
+				</p>
+				<mat-form-field class="example-full-width" appearance="fill">
+					<mat-label>room number</mat-label>
+					<input
+						[formControl]="roomNumber"
+						matInput
+						id="RoomNumber"
+						type="number"
+						(keyup)="updateRoomNumber($event); addRoom($event)"
+					/>
+				</mat-form-field>
+				<p>{{ dupRoomWarning }}</p>
+				<button
+					mat-raised-button
+					class="submitRoom"
+					color="primary"
+					type="button"
+					(click)="addRoom($event)"
+				>
+					Add Room
+				</button>
+			</form>
+		</div>
+
+		<button
+			mat-raised-button
+			color="primary"
+			type="button"
+			(click)="prevBoard()"
+		>
+			Previous Board
+		</button>
+		Current Board: {{ currentBoard + 1 }}
+		<button
+			mat-raised-button
+			color="primary"
+			type="button"
+			(click)="nextBoard()"
+		>
+			Next Board
+		</button>
+		<div>
+			<button
+				mat-raised-button
+				color="secondary"
+				type="button"
+				(click)="sortBoards()"
+			>
+				Sort Boards
+			</button>
+		</div>
+	</div>
+</div>

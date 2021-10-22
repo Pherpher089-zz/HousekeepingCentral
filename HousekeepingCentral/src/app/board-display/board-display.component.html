@@ -1,32 +1,42 @@
-<div>
-  <h1>Housekeeping Boards</h1>
-  <div
-    class="boards"
-    *ngFor="let board of updatedBoards; let i = index"
-    [attr.data-index]="i"
-  >
-    <div class="boardDisplay">
-      <h2>Board{{ i }}</h2>
-      <div *ngFor="let room of board; let i = index" [attr.data-index]="i">
-        <p class="room">{{ room }}</p>
-      </div>
-    </div>
-  </div>
+<div class="boards-container">
+	<div *ngIf="hasSorted == false">
+		<h1>Housekeeping Boards</h1>
+		<div class="boards">
+			<div
+				class="board"
+				*ngFor="let board of updatedBoards; let i = index"
+				[attr.data-index]="i"
+			>
+				<!-- <table mat-table [dataSource]="myDataArray"></table> -->
+				<div class="board-display">
+					<h2>Board {{ i + 1 }}</h2>
+					<div
+						*ngFor="let room of board; let i = index"
+						[attr.data-index]="i"
+					>
+						<p class="room">{{ room }}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <h1>Changes</h1>
-  <div
-    class="boards"
-    *ngFor="let newBoard of changes; let i = index"
-    [attr.data-index]="i"
-  >
-    <div class="boardDisplay">
-      <h2>Board{{ i }}</h2>
-      <div
-        *ngFor="let newRoom of newBoard; let i = index"
-        [attr.data-index]="i"
-      >
-        <p class="newRoom">{{ newRoom }}</p>
-      </div>
-    </div>
-  </div>
+	<div *ngIf="hasSorted">
+		<h1>Changes</h1>
+		<div
+			class="boards"
+			*ngFor="let newBoard of changes; let i = index"
+			[attr.data-index]="i"
+		>
+			<div class="boardDisplay">
+				<h2>Board{{ i }}</h2>
+				<div
+					*ngFor="let newRoom of newBoard; let i = index"
+					[attr.data-index]="i"
+				>
+					<p class="newRoom">{{ newRoom }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
