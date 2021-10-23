@@ -11,10 +11,19 @@
     flex-direction: column
     align-items: flex-start
 
+.column
+    display: flex
+    flex-direction: column
+    align-items: center
+
 .board-creation
     width: 200px
+    display: flex
+    justify-content: center
+    align-items: center
 
 .light-text
+    margin: 0 0 15px
     font-size: 10px
     line-height: 12px
     color: gray 
@@ -22,3 +31,116 @@
 .flex-center
     display: flex
     align-items: center
+
+.center
+    display: flex
+    align-items: center
+    justify-content: center
+
+.icon
+    width: 60px    
+    display: flex
+    align-items: center
+
+.housekeeping-title
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 310px
+
+.title
+    display: flex
+    justify-content: center
+    align-items: center
+    margin: 0
+    font-weight: 500
+
+.submitRoom
+    background: #ff4081 !important
+    
+.filter-icon
+    width: 30px
+    
+.fadeIn 
+    -webkit-animation: fadein 2s
+    -moz-animation: fadein 2s
+    -ms-animation: fadein 2s
+    -o-animation: fadein 2s
+    animation: fadein 2s
+
+
+@keyframes fadein 
+    from 
+        opacity: 0
+    
+    to 
+        opacity: 1
+    
+
+
+/* Firefox < 16 */
+@-moz-keyframes fadein 
+    from 
+        opacity: 0
+    to 
+        opacity: 1
+	
+
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein
+    from 
+        opacity: 0
+    to 
+        opacity: 1
+	
+
+
+/* Internet Explorer */
+@-ms-keyframes fadein
+    from 
+        opacity: 0
+
+    to 
+        opacity: 1
+	
+
+.fadeOut 
+    -webkit-animation: fadeOut 2s
+    -moz-animation: fadeOut 2s
+    -ms-animation: fadeOut 2s
+    -o-animation: fadeOut 2s
+    animation: fadeOut 2s
+
+@keyframes fadeOut 
+    from 
+        opacity: 1
+
+    to 
+        opacity: 0
+	
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadeOut 
+    from 
+        opacity: 1
+
+    to 
+        opacity: 0
+
+/* Internet Explorer */
+@-ms-keyframes fadeOut 
+    from 
+        opacity: 1
+
+    to 
+        opacity: 0
+
+.addRoom
+    margin: 0 20px
+
+.formClass
+    margin: 55px 0 0
+
+.sortBoards
+    margin: 50px 0 0

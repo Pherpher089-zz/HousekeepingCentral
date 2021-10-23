@@ -10,10 +10,11 @@ export class BoardDisplayComponent implements OnInit {
 	@Input() queens: any = {};
 	@Input() changes: any[] = [];
 	@Input() hasSorted: boolean = false;
+	@Input() currentBoard: number = 0;
 
 	constructor() {}
 	ngOnInit(): void {
-		// console.log(this.updatedBoards)
+		console.log(this.currentBoard, 'current board');
 	}
 
 	ngOnChanges(c: SimpleChange) {}

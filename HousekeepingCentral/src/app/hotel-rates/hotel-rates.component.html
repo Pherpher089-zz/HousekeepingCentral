@@ -1,19 +1,32 @@
-<div class="rate-container">
-	<mat-card *ngIf="rates.length !== 0" class="competitor-container">
-		<div class="center">
-			<img src="/assets/lighting.png" alt="Competitors" class="icon" />
-			<h3 class="competitor-title">Competitor Rates</h3>
-			<img src="/assets/lighting.png" alt="Competitors" class="icon" />
-		</div>
-		<mat-divider></mat-divider>
-		<div *ngFor="let rate of rates">
-			<div class="rate-box">
-				<p>
-					{{ rate.name }}
-				</p>
-				<p>${{ rate.rate }}</p>
+<div class="rate-container fadeIn">
+	<app-loading *ngIf="loading"></app-loading>
+	<div *ngIf="!loading">
+		<app-hotel-animation></app-hotel-animation>
+		<div class="margin-top"></div>
+		<mat-card *ngIf="rates.length !== 0" class="competitor-container">
+			<div class="center">
+				<img
+					src="/assets/lighting.png"
+					alt="Competitors"
+					class="icon"
+				/>
+				<h3 class="competitor-title">Competitor Rates</h3>
+				<img
+					src="/assets/lighting.png"
+					alt="Competitors"
+					class="icon"
+				/>
 			</div>
 			<mat-divider></mat-divider>
-		</div>
-	</mat-card>
+			<div *ngFor="let rate of rates">
+				<div class="rate-box">
+					<p>
+						{{ rate.name }}
+					</p>
+					<p>${{ rate.rate }}</p>
+				</div>
+				<mat-divider></mat-divider>
+			</div>
+		</mat-card>
+	</div>
 </div>

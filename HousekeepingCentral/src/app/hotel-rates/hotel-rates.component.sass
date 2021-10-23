@@ -1,8 +1,10 @@
 .rate-container
     height: 100%
     display: flex
+    flex-direction: column
     justify-content: center
     align-items: center
+
 
 .rate-box 
     display: flex
@@ -18,6 +20,8 @@
     justify-content: center
     align-items: center
 
+.margin-top 
+    margin: 10px 0 0
 .icon
     width: 20px    
     display: flex
@@ -25,3 +29,89 @@
 
 .competitor-title
     margin: 0 5px
+
+
+
+.fadeIn 
+    -webkit-animation: fadein 2s
+    -moz-animation: fadein 2s
+    -ms-animation: fadein 2s
+    -o-animation: fadein 2s
+    animation: fadein 2s
+
+
+@keyframes fadein 
+    from 
+        opacity: 0
+    
+    to 
+        opacity: 1
+    
+
+
+/* Firefox < 16 */
+@-moz-keyframes fadein 
+    from 
+        opacity: 0
+    to 
+        opacity: 1
+	
+
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein
+    from 
+        opacity: 0
+    to 
+        opacity: 1
+	
+
+
+/* Internet Explorer */
+@-ms-keyframes fadein
+    from 
+        opacity: 0
+
+    to 
+        opacity: 1
+	
+
+.fadeOut 
+    -webkit-animation: fadeOut 2s
+    -moz-animation: fadeOut 2s
+    -ms-animation: fadeOut 2s
+    -o-animation: fadeOut 2s
+    animation: fadeOut 2s
+
+@keyframes fadeOut 
+    from 
+        opacity: 1
+
+    to 
+        opacity: 0
+	
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadeOut 
+    from 
+        opacity: 1
+
+    to 
+        opacity: 0
+
+/* Internet Explorer */
+@-ms-keyframes fadeOut 
+    from 
+        opacity: 1
+
+    to 
+        opacity: 0
+
+.addRoom
+    margin: 0 20px
+
+.formClass
+    margin: 55px 0 0
+
+.sortBoards
+    margin: 50px 0 0
